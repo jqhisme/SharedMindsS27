@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Conjure - Voice to 3D & 360 Panorama in Three.js</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.1/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.1/examples/jsm/"
+      }
+    }
+    </script>
+</head>
+
+<body>
+    <!-- Three.js Canvas Container -->
+    <div id="canvas-container"></div>
+    <div id="crosshair"></div>
+
+    <!-- Floating HUD Panel -->
+    <div id="top-hud" class="hud-panel">
+        <div class="hud-title-row">
+            <div class="hud-title">
+                <span>🪄 Conjure</span>
+                <span style="font-size: 13px; font-weight: normal; color: #94a3b8;">Voice to 3D &amp; 360 Skybox</span>
+            </div>
+            <div class="hud-hint">🖱️ Click &amp; drag to look around &bull; 📜 Scroll to zoom &bull; ⌨️ Hold Space to speak</div>
+        </div>
+
+        <!-- Panorama Background Controls -->
+        <div class="control-row">
+            <span class="control-label">🌐 360 Skybox:</span>
+            <input type="text" id="pano-input" class="hud-input"
+                placeholder="Describe a 360 panorama environment (e.g. bioluminescent underwater city, deep space nebula)...">
+            <select id="pano-model-select" class="hud-select" title="Panorama Model">
+                <option value="black-forest-labs/flux-schnell" selected>Flux Schnell (Fast 360 - Recommended)</option>
+                <option value="lucataco/sdxl-panoramic">SDXL Panoramic (Seamless)</option>
+            </select>
+            <button id="btn-gen-pano" class="hud-btn btn-accent">🌌 Set Sky</button>
+        </div>
+        <div class="control-row" style="margin-top: -4px;">
+            <span style="font-size: 11px; color: #94a3b8; margin-left: 116px;">Sky Presets:</span>
+            <span class="preset-chip" data-type="pano" data-val="bioluminescent alien forest with glowing neon plants at midnight, 360 panorama">Alien Forest</span>
+            <span class="preset-chip" data-type="pano" data-val="futuristic cyberpunk rooftop overlooking neon skyscrapers in Tokyo at dusk, 360 panorama">Cyberpunk City</span>
+            <span class="preset-chip" data-type="pano" data-val="deep space colorful nebula with distant stars and planets, 360 panorama">Deep Space</span>
+            <span class="preset-chip" data-type="pano" data-val="ancient stone temple courtyard in the clouds at golden hour, 360 panorama">Sky Temple</span>
+            <span class="preset-chip" data-type="pano-local" data-val="itp.jpg">ITP Floor (Local)</span>
+        </div>
+
+        <!-- 3D Model Conjuring Controls -->
+        <div class="control-row" style="margin-top: 4px;">
+            <span class="control-label">✨ Conjure 3D:</span>
+            <button id="btn-voice" class="hud-btn btn-mic" title="Click or Hold Space to Speak">
+                <span id="mic-icon">🎙️</span>
+                <span id="mic-label">Speak</span>
+            </button>
+            <input type="text" id="model-input" class="hud-input"
+                placeholder="What would you like to conjure? (e.g. a golden dragon, spacesuit astronaut, vintage robot)...">
+            <select id="model-select" class="hud-select" title="3D Generation Model">
+                <option value="hologram-prism" selected>AI Hologram 3D Prism (Fast 3.5s - Recommended)</option>
+                <option value="cjwbw/shap-e">Shap-E (Text to 3D Mesh - Heavy/Cold Boot)</option>
+                <option value="procedural-crystal">Procedural 3D Crystal (Instant)</option>
+            </select>
+            <button id="btn-conjure" class="hud-btn btn-primary">🪄 Conjure</button>
+            <button id="btn-clear-models" class="hud-btn" style="background: rgba(255,255,255,0.1);" title="Clear all conjured 3D models">🧹 Clear</button>
+        </div>
+        <div class="control-row" style="margin-top: -4px;">
+            <span style="font-size: 11px; color: #94a3b8; margin-left: 116px;">3D Presets:</span>
+            <span class="preset-chip" data-type="model" data-val="a majestic golden dragon with spread wings">Golden Dragon</span>
+            <span class="preset-chip" data-type="model" data-val="a futuristic spacesuit astronaut with gold visor">Astronaut</span>
+            <span class="preset-chip" data-type="model" data-val="a cute vintage clockwork robot holding a flower">Vintage Robot</span>
+            <span class="preset-chip" data-type="model" data-val="a glowing magical crystal sword with ornate hilt">Crystal Sword</span>
+            <span class="preset-chip" data-type="model-local" data-val="Duck.glb">Yellow Duck (Local GLB)</span>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div id="status-hud" class="hud-panel">
+        <div class="status-spinner" id="status-spinner"></div>
+        <span id="status-text">Ready. Speak or type to Conjure in 3D! Click &amp; drag to look around.</span>
+    </div>
+
+    <!-- Main Logic -->
+    <script src="conjure.js" type="module"></script>
+</body>
+
+</html>
